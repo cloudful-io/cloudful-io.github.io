@@ -1,7 +1,7 @@
 {
   "name": "will-cloudful.github.io",
   "version": "0.1.0",
-  "homepage": "https://will-cloudful.github.io",
+  "homepage": "https://cloudful.io",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",

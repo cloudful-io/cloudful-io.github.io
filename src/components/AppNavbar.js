@@ -24,12 +24,13 @@ const AppNavbar = () => {
     };
     
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{ minHeight: 80 }}>
             <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                <CloudIcon sx={{ display: { xs: 'none', md: 'flex', color: 'white'}, mr: 1 }} />
+                <Toolbar disableGutters sx={{ minHeight: 80 }}>
+                <CloudIcon  sx={{ fontSize: 60, display: { xs: 'none', md: 'flex', color: 'white'}, mr: 1 }} />
                 <Typography
                     variant="h6"
+                    fontSize="80"
                     noWrap
                     component="a"
                     href="/"

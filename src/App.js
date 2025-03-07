@@ -20,7 +20,7 @@ function App() {
     palette: {
       mode: 'light',
       primary: {
-        main: '#42a5f5'
+        main: '#F4F8FE'
       }
     },
   });

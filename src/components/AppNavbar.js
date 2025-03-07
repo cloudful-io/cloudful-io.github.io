@@ -40,7 +40,7 @@ const AppNavbar = () => {
                     fontFamily: 'monospace',
                     fontWeight: 700,
                     letterSpacing: '.1rem',
-                    color: 'white',
+                    color: '#888888',
                     textDecoration: 'none',
                     }}
                 >
@@ -101,17 +101,17 @@ const AppNavbar = () => {
                     fontFamily: 'monospace',
                     fontWeight: 700,
                     letterSpacing: '.1rem',
-                    color: 'white',
+                    color: '#888888',
                     textDecoration: 'none',
                     }}
                 >
                     Cloudful
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-                    <Button color="inherit" component={Link} to="/about" sx={{ my: 2, color: 'white', display: 'block' }}>About</Button>
-                    <Button color="inherit" component={Link} to="/contact" sx={{ my: 2, color: 'white', display: 'block' }}>Contact</Button>
-                    <Button color="inherit" component={Link} to="/products" sx={{ my: 2, color: 'white', display: 'block' }}>Products</Button>
-                    <Button color="inherit" component={Link} to="/services" sx={{ my: 2, color: 'white', display: 'block' }}>Services</Button>
+                    <Button color="inherit" component={Link} to="/about" sx={{ my: 2, display: 'block' }}>About</Button>
+                    <Button color="inherit" component={Link} to="/contact" sx={{ my: 2, display: 'block' }}>Contact</Button>
+                    <Button color="inherit" component={Link} to="/products" sx={{ my: 2, display: 'block' }}>Products</Button>
+                    <Button color="inherit" component={Link} to="/services" sx={{ my: 2, display: 'block' }}>Services</Button>
                 </Box>
                 </Toolbar>
             </Container>

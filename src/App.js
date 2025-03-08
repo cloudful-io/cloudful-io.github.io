@@ -11,7 +11,6 @@ import Contact from "./pages/Contact";
 import Products from "./pages/Products";
 import Services from "./pages/Services";
 
-
 //import PrivateRoute from "./PrivateRoute";
  
 function App() {

@@ -9,7 +9,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import CloudIcon from '@mui/icons-material/Cloud';
 import { Link } from "react-router-dom";
 
 const AppNavbar = () => {
@@ -27,7 +26,18 @@ const AppNavbar = () => {
         <AppBar position="static" sx={{ minHeight: 64 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ minHeight: 64 }}>
-                <CloudIcon  sx={{ fontSize: 60, display: { xs: 'none', md: 'flex', color: 'white'}, mr: 1 }} />
+                <Box
+                    component="img"
+                    sx={{
+                        height: 64,  // Adjust size as needed
+                        width: 'auto',
+                        paddingRight: '4px',
+                        display: { xs: 'none', md: 'flex'},
+                    }}
+                    
+                    alt="Logo"
+                    src={require('../assets/images/logo.png')}  // Relative path to the logo image
+                    />
                 <Typography
                     variant="h6"
                     fontSize="80"
@@ -40,7 +50,7 @@ const AppNavbar = () => {
                     fontFamily: 'monospace',
                     fontWeight: 700,
                     letterSpacing: '.1rem',
-                    color: '#888888',
+                    color: '#777',
                     textDecoration: 'none',
                     }}
                 >
@@ -88,7 +98,18 @@ const AppNavbar = () => {
                     </MenuItem>
                     </Menu>
                 </Box>
-                <CloudIcon sx={{ display: { xs: 'flex', md: 'none', color: 'white' }, mr: 1 }} />
+                <Box
+                    component="img"
+                    sx={{
+                        height: 64,  // Adjust size as needed
+                        width: 'auto',
+                        paddingRight: '4px',
+                        display: { xs: 'flex', md: 'none' },
+                    }}
+                    
+                    alt="Logo"
+                    src={require('../assets/images/logo.png')}  // Relative path to the logo image
+                    />
                 <Typography
                     variant="h5"
                     noWrap
@@ -101,7 +122,7 @@ const AppNavbar = () => {
                     fontFamily: 'monospace',
                     fontWeight: 700,
                     letterSpacing: '.1rem',
-                    color: '#888888',
+                    color: '#777',
                     textDecoration: 'none',
                     }}
                 >

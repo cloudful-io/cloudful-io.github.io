@@ -33,7 +33,7 @@ function App() {
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
           <ResponsiveAppNavbar/>
-          <Box component="main" sx={{ p: 3 }}>
+          <Box component="main" sx={{ p: 0 }}>
             <Toolbar />
             <Routes>
               {/* Public Routes */}

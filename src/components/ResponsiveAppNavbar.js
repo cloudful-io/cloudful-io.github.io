@@ -73,7 +73,7 @@ function ResponsiveAppNavbar(props) {
           <Box
             component="a"
             color="inherit"
-            sx={{ flexGrow: 1, textDecoration: 'none', textAlign: 'center', display: { sm: 'none' } }}
+            sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', textDecoration: 'none', textAlign: 'center', display: { sm: 'none' } }}
             href="/">
             <Typography
                 variant="h6"
@@ -86,7 +86,7 @@ function ResponsiveAppNavbar(props) {
           <Box
             component="a"
             color="inherit"
-            sx={{ textDecoration: 'none', display: { xs: 'none', sm: 'block' } }}
+            sx={{ textDecoration: 'none', display: 'flex', alignItems: 'center', width: 'auto' }}
             href="/">
                 <Box
                     component="img"
@@ -100,12 +100,8 @@ function ResponsiveAppNavbar(props) {
                     alt="Logo"
                     src={require('../assets/images/logo.png')}  // Relative path to the logo image
                     />
-            </Box>
-            <Box
-            component="a"
-            color="inherit"
-            sx={{ flexGrow: 1, textDecoration: 'none', display: { xs: 'none', sm: 'block' } }}
-            href="/">
+            
+            
           <Typography
             variant="h6"
             component="div"
@@ -115,7 +111,7 @@ function ResponsiveAppNavbar(props) {
           </Typography>
           </Box>
           
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 'auto' }}>
             {navItems.map(([label, link]) => (
               <Button key={label} sx={{ color: '#555' }} component="a" href={link}>
                 {label}

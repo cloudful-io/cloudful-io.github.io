@@ -1,16 +1,29 @@
 import React from "react";
+import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { Grid2 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 const Home = () => {
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: '#eee',
+    ...theme.typography.body2,
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    ...theme.applyStyles('dark', {
+      backgroundColor: '#1A2027',
+    }),
+  }));
+
     return (
         <>
         <Box
         sx={{
           position: 'relative',
           width: '100vw',
-          height: '500px',  // Adjust height as needed
+          height: '400px',  // Adjust height as needed
           margin: 0,
           padding: 0,
           backgroundImage: 'url(/assets/images/hero.jpg)',  // Add the URL of your hero image
@@ -36,75 +49,15 @@ const Home = () => {
           Complex solutions architected from secure building blocks
         </Typography>
       </Box>
-
-      <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      paddingTop="20px"
-    >
-      <Grid2 container spacing={2} justifyContent="center" alignItems="center" direction="column">
-        {/* First row */}
-        <Grid2 container spacing={4} justifyContent="center">
-          <Grid2 xs={5}>
-            <Box
-              sx={{
-                width: 400,
-                height: 400,
-                borderRadius: 2,
-                bgcolor: 'primary.main',
-                boxShadow: 1,
-              }}
-            >
-              1st container
-            </Box>
-          </Grid2>
-          <Grid2 xs={5}>
-            <Box
-              sx={{
-                width: 400,
-                height: 400,
-                borderRadius: 2,
-                bgcolor: 'primary.main',
-                boxShadow: 1,
-              }}
-            >
-              2nd container
-            </Box>
-          </Grid2>
-        </Grid2>
-
-        {/* Second row */}
-        <Grid2 container spacing={4} justifyContent="center" sx={{ marginTop: 2 }}>
-          <Grid2 xs={5}>
-            <Box
-              sx={{
-                width: 400,
-                height: 400,
-                borderRadius: 2,
-                bgcolor: 'primary.main',
-                boxShadow: 1,
-              }}
-            >
-              3rd container
-            </Box>
-          </Grid2>
-          <Grid2 xs={5}>
-            <Box
-              sx={{
-                width: 400,
-                height: 400,
-                borderRadius: 2,
-                bgcolor: 'primary.main',
-                boxShadow: 1,
-              }}
-            >
-              4th container
-            </Box>
-          </Grid2>
-        </Grid2>
-      </Grid2>
-    </Box>
+      <Box padding={2} sx={{ flexGrow: 1 }}>
+        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+          {Array.from(Array(6)).map((_, index) => (
+            <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
+              <Item>{index + 1}</Item>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
         </>
             
     );

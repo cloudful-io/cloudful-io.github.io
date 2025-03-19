@@ -1,5 +1,6 @@
 import React from "react";
 import Box from '@mui/material/Box';
+import { Grid2 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 const Home = () => {
@@ -20,21 +21,90 @@ const Home = () => {
         
       >
         <Typography
-          variant="h4"
+          variant="h5"
           component="div"
           sx={{
             position: 'absolute',
             bottom: '20px',
             left: '20px',
-            color: '#999',
+            color: '#aaa',
             backgroundColor: 'rgba(0, 0, 0, 0.4)',  // Optional: Adds a transparent dark overlay for contrast
             padding: '10px 20px',
             borderRadius: '5px',
           }}
         >
-          Secure Blocks.  Infinite Possibilities.
+          Complex solutions architected from secure building blocks
         </Typography>
       </Box>
+
+      <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      paddingTop="20px"
+    >
+      <Grid2 container spacing={2} justifyContent="center" alignItems="center" direction="column">
+        {/* First row */}
+        <Grid2 container spacing={4} justifyContent="center">
+          <Grid2 xs={5}>
+            <Box
+              sx={{
+                width: 400,
+                height: 400,
+                borderRadius: 2,
+                bgcolor: 'primary.main',
+                boxShadow: 1,
+              }}
+            >
+              1st container
+            </Box>
+          </Grid2>
+          <Grid2 xs={5}>
+            <Box
+              sx={{
+                width: 400,
+                height: 400,
+                borderRadius: 2,
+                bgcolor: 'primary.main',
+                boxShadow: 1,
+              }}
+            >
+              2nd container
+            </Box>
+          </Grid2>
+        </Grid2>
+
+        {/* Second row */}
+        <Grid2 container spacing={4} justifyContent="center" sx={{ marginTop: 2 }}>
+          <Grid2 xs={5}>
+            <Box
+              sx={{
+                width: 400,
+                height: 400,
+                borderRadius: 2,
+                bgcolor: 'primary.main',
+                boxShadow: 1,
+              }}
+            >
+              3rd container
+            </Box>
+          </Grid2>
+          <Grid2 xs={5}>
+            <Box
+              sx={{
+                width: 400,
+                height: 400,
+                borderRadius: 2,
+                bgcolor: 'primary.main',
+                boxShadow: 1,
+              }}
+            >
+              4th container
+            </Box>
+          </Grid2>
+        </Grid2>
+      </Grid2>
+    </Box>
         </>
             
     );

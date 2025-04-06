@@ -1,5 +1,5 @@
 import React from "react";
-import ResponsiveAppNavbar from "./components/ResponsiveAppNavbar";
+import AppNavbar from "./components/AppNavbar";
 
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -32,7 +32,7 @@ function App() {
       <ThemeProvider theme={lightTheme}>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
-          <ResponsiveAppNavbar/>
+          <AppNavbar/>
           <Box component="main" sx={{ p: 0 }}>
             <Toolbar />
             <Routes>

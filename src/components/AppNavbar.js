@@ -1,144 +1,153 @@
-import React from "react";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import { Link } from "react-router-dom";
 
-const AppNavbar = () => {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
 
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
+const drawerWidth = 240;
 
-    const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-    };
-    
-    return (
-        <AppBar position="static" sx={{ minHeight: 64 }}>
-            <Container maxWidth="xl">
-                <Toolbar disableGutters sx={{ minHeight: 64 }}>
+const navItems = [
+    ['About', '/#/about'],
+    ['Contact', '/#/contact'],
+    ['Products', '/#/products'],
+    ['Services', '/#/services'],
+  ];
+
+function AppNavbar(props) {
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, my: 2 }}>
+
+            <img src={require('../assets/images/logo.png')}  alt="Cloudful Logo" style={{ width: 40, height: 40, objectFit: 'contain' }} />
+
+            <Typography variant="h6" sx={{ my: 2, lineHeight: 1 }}>
+                Cloudful
+            </Typography>
+         </Box>
+      <Divider />
+      <List>
+        {navItems.map(([label, link]) => (
+          <ListItem key={label} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }} component="a" href={link}>
+              <ListItemText primary={label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  return (
+    <>
+      <AppBar component="nav">
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none', color: '#555'} }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box
+            component="a"
+            color="inherit"
+            sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', textDecoration: 'none', textAlign: 'center', display: { sm: 'none' } }}
+            href="/">
+            <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, textAlign: 'center', display: { sm: 'none' } }}
+            >
+            Cloudful
+          </Typography>
+          </Box>
+          <Box
+            component="a"
+            color="inherit"
+            sx={{ textDecoration: 'none', display: 'flex', alignItems: 'center', width: 'auto' }}
+            href="/">
                 <Box
                     component="img"
                     sx={{
                         height: 64,  // Adjust size as needed
                         width: 'auto',
                         paddingRight: '4px',
-                        display: { xs: 'none', md: 'flex'},
+                        display: { xs: 'none', sm: 'block'},
                     }}
                     
                     alt="Logo"
                     src={require('../assets/images/logo.png')}  // Relative path to the logo image
                     />
-                <Typography
-                    variant="h6"
-                    fontSize="80"
-                    noWrap
-                    component="a"
-                    href="/"
-                    sx={{
-                    mr: 2,
-                    display: { xs: 'none', md: 'flex' },
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.1rem',
-                    color: '#777',
-                    textDecoration: 'none',
-                    }}
-                >
-                    Cloudful
-                </Typography>
-
-                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                    <IconButton
-                    size="large"
-                    aria-label="Menu"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleOpenNavMenu}
-                    color="inherit"
-                    >
-                    <MenuIcon sx={{ display: { color: 'white'}}}/>
-                    </IconButton>
-                    <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorElNav}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    open={Boolean(anchorElNav)}
-                    onClose={handleCloseNavMenu}
-                    sx={{ display: { xs: 'block', md: 'none' } }}
-                    >
-                    <MenuItem key="About" component={Link} to="/about" onClick={handleCloseNavMenu}>
-                        <Typography sx={{ textAlign: 'center' }}>About</Typography>
-                    </MenuItem>
-                    <MenuItem key="About" component={Link} to="/contact" onClick={handleCloseNavMenu}>
-                        <Typography sx={{ textAlign: 'center' }}>Contact</Typography>
-                    </MenuItem>
-                    <MenuItem key="Products" component={Link} to="/products" onClick={handleCloseNavMenu}>
-                        <Typography sx={{ textAlign: 'center' }}>Products</Typography>
-                    </MenuItem>
-                    <MenuItem key="Services" component={Link} to="/services" onClick={handleCloseNavMenu}>
-                        <Typography sx={{ textAlign: 'center' }}>Services</Typography>
-                    </MenuItem>
-                    </Menu>
-                </Box>
-                <Box
-                    component="img"
-                    sx={{
-                        height: 64,  // Adjust size as needed
-                        width: 'auto',
-                        paddingRight: '4px',
-                        display: { xs: 'flex', md: 'none' },
-                    }}
-                    
-                    alt="Logo"
-                    src={require('../assets/images/logo.png')}  // Relative path to the logo image
-                    />
-                <Typography
-                    variant="h5"
-                    noWrap
-                    component="a"
-                    href="#app-bar-with-responsive-menu"
-                    sx={{
-                    mr: 2,
-                    display: { xs: 'flex', md: 'none' },
-                    flexGrow: 1,
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.1rem',
-                    color: '#777',
-                    textDecoration: 'none',
-                    }}
-                >
-                    Cloudful
-                </Typography>
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-                    <Button color="inherit" component={Link} to="/about" sx={{ my: 2, display: 'block' }}>About</Button>
-                    <Button color="inherit" component={Link} to="/contact" sx={{ my: 2, display: 'block' }}>Contact</Button>
-                    <Button color="inherit" component={Link} to="/products" sx={{ my: 2, display: 'block' }}>Products</Button>
-                    <Button color="inherit" component={Link} to="/services" sx={{ my: 2, display: 'block' }}>Services</Button>
-                </Box>
-                </Toolbar>
-            </Container>
-            </AppBar>
-
+            
+            
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          >
+            Cloudful
+          </Typography>
+          </Box>
+          
+          <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 'auto' }}>
+            {navItems.map(([label, link]) => (
+              <Button key={label} sx={{ color: '#555' }} component="a" href={link}>
+                {label}
+              </Button>
+            ))}
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <nav>
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </nav>
+      </>
     )  
 };
+
+AppNavbar.propTypes = {
+    /**
+     * Injected by the documentation to work in an iframe.
+     * You won't need it on your project.
+     */
+    window: PropTypes.func,
+  };
+
 
 export default AppNavbar;

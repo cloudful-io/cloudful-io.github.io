@@ -1,24 +1,12 @@
 import React from "react";
-import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid2';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 const Home = () => {
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: '#eee',
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    ...theme.applyStyles('dark', {
-      backgroundColor: '#1A2027',
-    }),
-  }));
+  
 
     return (
-        <>
+      <>
         <Box
         sx={{
           position: 'relative',
@@ -49,8 +37,8 @@ const Home = () => {
           Build Once, Deploy Many.
         </Typography>
       </Box>
-      
-        </>
+    
+      </>
             
     );
   };

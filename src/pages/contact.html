@@ -1,0 +1,23 @@
+<section class="page-hero page-hero-accent wrap">
+  <p class="eyebrow">Start a conversation</p>
+  <h1>Contact</h1>
+  <p class="page-lede">Share a question about Cloudful’s products, services, or approach.</p>
+</section>
+<section class="contact-section wrap section-space">
+  <div class="section-kicker"><span>01</span> Get in touch</div>
+  <div class="contact-grid">
+    <div class="contact-copy"><h2>What can we help you build?</h2><p>Questions about a product, a service, or an idea you’d like to explore are all welcome.</p><p class="contact-note">Please don’t include passwords, financial details, or other sensitive information in your message.</p></div>
+    <div class="form-shell" id="contact-form-shell" data-endpoint="">
+      <div class="form-unavailable" id="contact-unavailable"><span class="status-mark" aria-hidden="true">i</span><div><h2>Message delivery is being set up.</h2><p>The contact form will be available once its secure delivery route is configured.</p></div></div>
+      <form class="contact-form" id="contact-form" hidden>
+        <div class="form-row"><label for="visitor-name">Your name</label><input id="visitor-name" name="name" autocomplete="name" required maxlength="100"></div>
+        <div class="form-row"><label for="visitor-email">Email address</label><input id="visitor-email" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+        <div class="form-row"><label for="visitor-message">How can we help?</label><textarea id="visitor-message" name="message" rows="6" required maxlength="5000"></textarea></div>
+        <div class="visually-hidden" aria-hidden="true"><label for="company-website">Leave this field empty</label><input id="company-website" name="website" tabindex="-1" autocomplete="off"></div>
+        <p class="privacy-copy">We’ll use your name, email address, and message only to respond to your inquiry. Please don’t include sensitive information.</p>
+        <button class="button button-dark submit-button" type="submit">Send message <span aria-hidden="true">↗</span></button>
+        <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>

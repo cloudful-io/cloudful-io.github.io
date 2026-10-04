@@ -2,53 +2,49 @@
 
 ## Purpose
 
-This repository contains the public Cloudful.io marketing website. It is a client-rendered React single-page application with pages for Home, About, Products, Services, and Contact. Its purpose is to introduce Cloudful.io and help visitors explore its products and services.
+This repository builds and publishes the public Cloudful.io marketing website. It uses static HTML pages, CSS, and a small amount of browser JavaScript. The pages explain Cloudful's reusable software approach and provide places to learn about products, services, and contacting the site manager.
 
-The site is a static front end. It has no server application, database, hosted content API, CMS, reader accounts, contact form submission service, or commerce flow. Site content and assets are maintained in this repository and included in the generated static build.
+The site has no application server, database, CMS, reader account system, or commerce flow. The build uses Node.js built-in modules to generate a shared page shell around the authored page content. A configured contact form posts visitor messages to an external HTTPS endpoint; without an endpoint configured, the site displays a clear not-yet-available state.
 
 ## System Context
 
 ```mermaid
 flowchart LR
-    Author[Content author] -->|Edit React pages and assets| Repo[Git repository]
-    Repo -->|npm run build| Build[Create React App production build]
-    Build -->|npm run deploy| Pages[GitHub Pages gh-pages branch]
+    Author[Content author] -->|Edit page fragments and assets| Repo[Git repository]
+    Repo -->|npm run build| Generator[Node static-site build script]
+    Generator -->|HTML, CSS, JS, images| Output[build directory]
+    Output -->|npm run deploy| Pages[GitHub Pages gh-pages branch]
     Reader[Reader browser] -->|HTTPS request| Pages
-    Pages -->|HTML, JavaScript, CSS, static assets| Reader
-    Reader -->|Hash route navigation| App[React application]
-    App -->|Render selected page| Reader
+    Pages -->|Static page and assets| Reader
+    Reader -->|Optional contact message| Form[Configured HTTPS form endpoint]
+    Form -->|Accepted or rejected response| Reader
+    Form -->|Accepted message| Manager[Cloudful site manager]
 ```
 
-The deployment script publishes the `build/` directory to the `gh-pages` branch and writes the `cloudful.io` custom-domain file through the `--cname` option. The repository does not contain a server runtime or a backend service.
+The deployment script publishes the `build/` directory to the `gh-pages` branch and creates a `CNAME` file for `cloudful.io`. The configured form endpoint is an external dependency; it is not implemented or operated by this repository.
 
 ## Application Boundaries
 
-The application starts in `src/index.js`, which mounts `App` into the `root` element defined in `public/index.html`. `src/App.js` provides routing, the Material UI theme, the page shell, and the shared navigation.
-
 | Area | Responsibility |
 | --- | --- |
-| `src/index.js` | Load global CSS, create the React root, and mount the application. |
-| `src/App.js` | Configure `HashRouter`, shared navigation, Material UI theme and CSS baseline, and map page routes to page components. |
-| `src/components/AppNavbar.js` | Render the Cloudful brand link, desktop navigation, and temporary mobile drawer. Navigation entries link to About, Contact, Products, and Services. |
-| `src/pages/Home.js` | Render the hero image and the “Build Once, Deploy Many.” tagline. |
-| `src/pages/About.js` | Render the current About page placeholder. |
-| `src/pages/Products.js` | Render the current Products page placeholder. |
-| `src/pages/Services.js` | Render the current Services page placeholder. |
-| `src/pages/Contact.js` | Render the current Contact page placeholder. |
-| `src/index.css` | Define the global body and code font stacks and reset the body margin. |
-| `public/` | Provide the HTML shell, favicon, web app manifest, robots file, and public static assets. |
-| `src/assets/images/` | Provide images imported into React modules, including the navigation logo. |
-| `package.json` | Declare runtime/build dependencies and the start, build, test, and deployment scripts. |
+| `src/pages/*.html` | Author the Home, About, Products, Services, and Contact page content as HTML fragments. |
+| `scripts/build.js` | Wrap each content fragment in the common accessible layout, navigation, metadata, footer, and contact endpoint configuration; generate static route directories and copy assets. |
+| `src/site.css` | Define site-wide layout, responsive styles, typography, focus styles, and reduced-motion behavior. |
+| `src/site.js` | Enhance mobile navigation and, when configured, submit the contact form to its endpoint. |
+| `src/assets/images/` | Hold images copied into the static site, including the logo and hero image. |
+| `scripts/serve.js` | Serve the built site locally with Node's built-in HTTP server. |
+| `public/favicon.ico`, `public/robots.txt` | Provide the favicon and crawler rules copied to the build output. |
+| `package.json` | Define build, local preview, and GitHub Pages deployment commands. `gh-pages` is the only package dependency. |
 
-The app uses React 19, React Router 7, Material UI 7, and Create React App (`react-scripts` 5). Material UI styling is configured in `App`; page-level layout is currently implemented with Material UI components and inline `sx` styles.
+The browser does not need React or a component runtime to render page content. The small JavaScript file only enhances navigation and handles the optional form interaction; content remains present in the generated HTML.
 
 ## Content Model
 
-There is no runtime content model or external content store. Page content is authored directly in React modules under `src/pages/`. Shared navigation labels and their route paths are defined in `src/components/AppNavbar.js`. Site-wide shell and route configuration live in `src/App.js`.
+There is no database or runtime content API. Page text and structure are authored in HTML fragments under `src/pages/`. The build script holds each page's title, description, and canonical route in a small page metadata map. Shared navigation and footer markup are maintained in the build script so they stay consistent across generated pages.
 
-Images are either imported from `src/assets/images/` and bundled with the application, or served from `public/` by a root-relative URL. The Home hero currently uses `/assets/images/hero.jpg`; the navigation logo is imported from `src/assets/images/logo.png`. These assets are public once deployed.
+Assets are stored under `src/assets/images/` and copied to `/images/` in the output. The Home hero uses `/images/hero.jpg`, and the Cloudful logo uses `/images/logo.png`. All site content and copied assets are public after deployment; private information and secrets must not be committed there.
 
-The current About, Products, Services, and Contact components contain placeholder labels rather than detailed offering content. The application does not load page data from Markdown, JSON, a CMS, or an API.
+The Home page describes Cloudful's stated categories: reusable components, libraries, and web applications. Product names, detailed capabilities, prices, availability, and acquisition routes are not populated until Cloudful confirms them. The Services page likewise avoids describing specific services that have not been confirmed.
 
 ## Content and Request Flow
 
@@ -56,70 +52,75 @@ The current About, Products, Services, and Contact components contain placeholde
 sequenceDiagram
     participant Author
     participant Repo as Git repository
-    participant Build as Create React App build
+    participant Build as Static build script
     participant Host as GitHub Pages
     participant Browser as Reader browser
-    participant App as React application
+    participant Endpoint as Configured form endpoint
+    participant Manager as Site manager
 
-    Author->>Repo: Update page module, shared component, or asset
+    Author->>Repo: Edit page fragment or asset
     Repo->>Build: npm run build
-    Build->>Build: Bundle JavaScript, CSS, HTML, and imported assets
+    Build->>Build: Generate page HTML, metadata, and shared layout
     Build->>Host: npm run deploy publishes build/
-    Browser->>Host: Request site document and static assets
-    Host-->>Browser: Return HTML shell and bundles
-    Browser->>App: Mount React application
-    Browser->>App: Navigate to hash route
-    App-->>Browser: Render selected page component
+    Browser->>Host: Request a page route
+    Host-->>Browser: Return generated HTML and static assets
+    Browser-->>Browser: Display page and enhance mobile navigation
+    Browser->>Endpoint: POST contact fields (only when configured)
+    Endpoint-->>Browser: Return accepted or failed status
+    Endpoint->>Manager: Deliver accepted inquiry
 ```
 
-At runtime, the browser receives the static HTML shell and application assets. React mounts in the browser and React Router selects a page based on the URL fragment. Page transitions are client-side and do not request page-specific content from a server.
+Page HTML and metadata are generated during the build. Each route is served as a static file, and ordinary page navigation does not depend on client-side routing or JavaScript. When configured, the contact form sends name, email address, and message as multipart form data to the endpoint using `fetch`. A successful HTTP response indicates that the endpoint accepted the inquiry; network errors and non-success responses produce a failure message and preserve the entered form values.
 
 ## Routing and Localization
 
-`HashRouter` stores the route after `#`, so the current page URLs follow this pattern:
+The build writes each route as an `index.html` file so it can be requested directly from static hosting:
 
-| Page | Route | Navigation link |
+| Page | Public route | Source |
 | --- | --- | --- |
-| Home | `/#/` | Cloudful brand link (`/`) |
-| About | `/#/about` | About |
-| Contact | `/#/contact` | Contact |
-| Products | `/#/products` | Products |
-| Services | `/#/services` | Services |
+| Home | `/` | `src/pages/home.html` |
+| About | `/about/` | `src/pages/about.html` |
+| Products | `/products/` | `src/pages/products.html` |
+| Services | `/services/` | `src/pages/services.html` |
+| Contact | `/contact/` | `src/pages/contact.html` |
 
-The fragment-based routing allows the static host to serve the same `index.html` for application routes; the browser-side router selects the page. The site currently has no locale routes or translation system. The route table does not define a catch-all page, so unknown application paths currently render no matching page content.
+The build also creates `404.html` for unknown paths. Navigation uses ordinary links. There is no localization system; all generated pages declare English as their language.
 
 ## Rendering and Metadata
 
-All route components render in the browser after React starts. The shared shell wraps the route outlet in a light Material UI theme, `CssBaseline`, and an `AppBar` navigation. At wide viewports the navigation displays links in the bar; at narrow viewports it uses a menu button and temporary drawer.
+The build generates complete HTML documents with one shared header, main landmark, footer, and site stylesheet. Page content is included in the HTML output, so search crawlers and visitors can read it without waiting for client-side rendering. The shared header has a keyboard-accessible skip link, a Cloudful home link, and primary navigation. On small screens, a button opens and closes the navigation; its expanded state is exposed with `aria-expanded`.
 
-The HTML document template is `public/index.html`. It provides the root mount element, viewport declaration, favicon and manifest links, a generic `Cloudful` title, and the current generic `Cloudful` description. Page components do not currently set route-specific document titles, descriptions, canonical URLs, or social sharing metadata. The application has no server-side rendering or static per-route HTML generation.
+Each route has its own document title, description, and canonical URL. Informative content uses semantic headings and labeled links. The logo is decorative beside an explicitly named home link; the hero image is decorative and the headline conveys the page's message in text. CSS includes visible keyboard focus treatment and a reduced-motion preference.
 
-The current Home page renders a background hero image and tagline. The other page components currently render only placeholder text. The app does not include a form handler, search, account flow, or purchase interaction.
+The Contact page includes labeled name, email, and message fields and relies on native browser validation for required fields and email format. The form is only revealed when `CONTACT_FORM_ENDPOINT` is configured with an HTTPS URL at build time. Otherwise, the page explains that delivery is being set up and does not present a working-looking form.
 
 ## Security and Privacy
 
-- The deployed site serves static application files and does not currently accept reader-submitted data.
-- There is no authentication, authorization, database, or private content boundary. Anything committed under `public/` or bundled into the application must be treated as public.
-- The current page code does not make application API requests or embed third-party analytics. Any external links, embeds, analytics, or forms added later introduce separate privacy and security considerations.
-- Dependencies are installed through npm and are included in the lockfile. Changes to runtime dependencies should be reflected in `package-lock.json` and reviewed through the repository's normal change process.
-- The React application requires JavaScript to render the pages. `public/index.html` currently shows a no-JavaScript notice when scripts are disabled; the marketing pages themselves are not rendered as static HTML.
+- All generated pages and assets are public. Do not include credentials, private customer information, or unpublished sensitive details in source fragments or public assets.
+- No visitor data is collected by the site while the contact endpoint is unconfigured.
+- When configured, the endpoint receives the visitor's name, email address, and message. The page tells visitors that these details are used to respond to their inquiry and asks them not to submit sensitive information.
+- `CONTACT_FORM_ENDPOINT` must be an HTTPS URL. Its URL is embedded in the public page and must not contain credentials or secret tokens. The endpoint must not require a secret from browser code.
+- The form endpoint must restrict accepted origins or otherwise protect its public submission route, provide spam prevention that does not block assistive technology, and deliver messages only to the authorized site manager.
+- The endpoint owner must establish access controls, retention, deletion, privacy disclosures, and monitoring before enabling submissions. Those policies and the final service are not configured in this repository.
+- The site does not currently use analytics, tracking, embedded third-party media, authentication, or application API calls.
+- The local preview server adds `X-Content-Type-Options: nosniff` and a strict referrer policy. Static-host response headers are controlled by the production host, not this repository.
 
 ## Build and Deployment
 
-The app uses Create React App scripts:
+The build and preview use Node.js built-in modules and do not require installing a frontend framework:
 
-- `npm start` starts the local development server.
-- `npm run build` creates the static production output in `build/`.
-- `npm test` starts the Create React App test runner.
-- `npm run deploy` runs `predeploy` (the production build) and publishes `build/` to the `gh-pages` branch, including a `CNAME` for `cloudful.io`.
+- `npm run build` generates Home, About, Products, Services, and Contact in `build/`, along with shared assets and `404.html`.
+- `npm start` builds the site and serves the result at `http://localhost:3000` (or the port in `PORT`).
+- `npm run deploy` builds and publishes `build/` to the `gh-pages` branch with a `cloudful.io` CNAME.
+- Set `CONTACT_FORM_ENDPOINT` to the selected HTTPS endpoint before the production build to enable form submissions. The endpoint must accept browser form posts from `https://cloudful.io` and return a success status only after it accepts a message.
 
-`package.json` sets the homepage to `https://cloudful.io`. Production hosting must serve the generated files over HTTPS, use the custom domain configuration, and retain the build's static asset paths. The checked-in repository does not define an automated CI workflow; deployment is available as the package script and depends on the caller having the required GitHub Pages permissions and configuration.
+`package.json` sets the site homepage to `https://cloudful.io`. Production hosting and DNS must serve the output over HTTPS and point the custom domain to GitHub Pages. This repository does not define a CI workflow; deployment depends on a maintainer's GitHub Pages permissions and repository configuration.
 
 ## Verification and Operations
 
-- `npm run build` verifies that Create React App can produce the static production bundle.
-- `npm test` invokes the Create React App test runner. No application test files are currently present in the repository.
-- No separate lint or typecheck scripts are defined in `package.json`; the configured ESLint rules are provided by `react-scripts`.
-- The current page routes are declared in `src/App.js`, while their visible navigation links are declared separately in `src/components/AppNavbar.js`. Both locations need to stay aligned when routes change.
-- Deployment is initiated through `npm run deploy`; production availability and custom-domain DNS are managed outside the React application.
-- The site currently has no runtime logging, analytics, uptime monitoring, or error-reporting integration configured in this repository.
+- `npm run build` verifies that all required page fragments, assets, and output files can be generated.
+- `npm start` provides a local preview, including direct nested page routes and a not-found response.
+- `npm run deploy` publishes the generated static output; production availability, DNS, and form endpoint operations are managed outside the site build.
+- Page metadata is defined in `scripts/build.js`; shared navigation and layout are generated there, while page-specific content is in `src/pages/`.
+- The form endpoint is not yet selected or configured. Until it is, the Contact page remains in its explanatory unavailable state.
+- No analytics, uptime monitoring, or error-reporting service is configured by this repository.
